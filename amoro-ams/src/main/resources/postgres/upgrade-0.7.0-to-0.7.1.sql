@@ -16,7 +16,7 @@
 ALTER TABLE table_runtime RENAME TO table_runtime_backup;
 CREATE TABLE table_runtime (LIKE table_runtime_backup INCLUDING ALL)
 
-ALTER TABLE table_runtime ALTER COLUMN optimizing_status optimizing_status_code INT DEFAULT 7;
+ALTER TABLE table_runtime ADD COLUMN optimizing_status_code INT DEFAULT 700;
 CREATE INDEX idx_optimizer_status_and_time ON table_runtime(optimizing_status_code, optimizing_status_start_time DESC);
 
 INSERT INTO table_runtime(
@@ -37,3 +37,5 @@ SELECT  table_id,catalog_name, db_name, table_name, current_snapshot_id,current_
             END,
         optimizing_status_start_time, optimizing_process_id, optimizer_group, table_config, optimizing_config, pending_input
 FROM table_runtime_backup;
+
+ALTER TABLE table_runtime DROP COLUMN optimizing_status;
